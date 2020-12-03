@@ -14,24 +14,25 @@ messagese = {
    "test3": "message3"
 }
 
-total = 1000
+total = 2
 
 producer = KafkaProducer(bootstrap_servers='127.0.0.1:9092')
 
 def run(start,end):
-    start = time.time()
     for item in range(int(start),int(end)):
-        key = "{}key_sdfsdf".format(item)
-        producer.send('mytopic4',b"message",key=key.encode())
-    end = time.time()
-    print("end - start:{}".format(end - start))
+        key = "{}key_mykey".format(item)
+        producer.send('testtopic',b"message")
     return True
 
 def run_single():
     '''
        单线程
     '''
-    run(0,total)
+    for i in range(10):
+        result =producer.send('testtopic',b"message,ojbk,ojbk...")
+        print(result)
+    time.sleep(10)
+    #run(0,total)
 
 def multiy_threads():
     '''
@@ -42,6 +43,7 @@ def multiy_threads():
 
     for item in trs:
         item.start()
+        item.join()
 
 def thread_pool():
     '''
